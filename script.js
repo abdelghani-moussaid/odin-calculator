@@ -30,12 +30,7 @@ function divide(firstNumber, secondNumber){
     return firstNumber / secondNumber;
 }
 
-function getNumber() {
-}
-
-
-
-let currentNumber;
+let currentNumber = 0;
 function populateDisplay(number){
     const input = document.querySelector("input");
     input.value = number;
@@ -44,7 +39,7 @@ function populateDisplay(number){
 
 function calculator(){
 
-    let firstNumber;
+    let firstNumber = null;
     let secondNumber;
     let currentOperator;
 
@@ -65,7 +60,7 @@ function calculator(){
     });
     operators.forEach((operator) => {
         operator.addEventListener("click", () => {
-            if(!firstNumber){
+            if(firstNumber === null){
                 stringValue = '';
                 firstNumber = currentNumber;
                 operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
@@ -73,6 +68,7 @@ function calculator(){
             }
             else{
                 secondNumber = currentNumber;
+                console.log(firstNumber, secondNumber, currentOperator);
                 firstNumber = operate(firstNumber, secondNumber, currentOperator);
                 populateDisplay(firstNumber);
                 operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
