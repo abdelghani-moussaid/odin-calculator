@@ -52,6 +52,7 @@ function calculator(){
     const operators = document.querySelectorAll(".operator");
     const clear = document.querySelector("#clear");
     const deleted = document.querySelector("#delete");
+    const toMinus = document.querySelector("#plus-minus");
 
     numbers.forEach((number) => {
         let getNumber = function(e) {
@@ -93,6 +94,13 @@ function calculator(){
         if(stringValue === "")
             stringValue = "0";
         populateDisplay(stringValue);
+    })
+    toMinus.addEventListener("click", ()=>{
+        console.log(stringValue);
+        if(!(stringValue === "0" || stringValue === "")){
+            stringValue = "-" + stringValue;
+            populateDisplay(stringValue);
+        }
     })
 }
 calculator();
