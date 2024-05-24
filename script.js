@@ -1,21 +1,14 @@
-let firstNumber;
-let operator;
-let secondNumber;
 
 function operate(firstNumber, secondNumber, operator){
     switch(operator){
-        case '+':
-            add(firstNumber, secondNumber);
-            break;
-        case '-':
-            subtract(firstNumber, secondNumber);
-            break;
-        case '*':
-            multiply(firstNumber, secondNumber);
-            break;
-        case '/':
-            divide(firstNumber, secondNumber);
-            break;
+        case 'add':
+            return add(firstNumber, secondNumber);
+        case 'subtract':
+            return subtract(firstNumber, secondNumber);
+        case 'multiply':
+            return multiply(firstNumber, secondNumber);
+        case 'divide':
+            return divide(firstNumber, secondNumber);
         default:
             alert("Wrong operator");
             break;
@@ -37,21 +30,62 @@ function divide(firstNumber, secondNumber){
     return firstNumber / secondNumber;
 }
 
-function populateDisplay(){
-    let stringValue = '';
-    let userInput = 0;
-    const numbers = document.querySelectorAll(".number");
-    const input = document.querySelector("input");
-    numbers.forEach(number => {
-        number.addEventListener("click", () =>{
-            stringValue += number.textContent;
-            if(stringValue.length <= 8){
-                input.value = Number(stringValue);
-                userInput = input.value;
-            }
-        })
-    });
-    return userInput;
+function getNumber() {
 }
-populateDisplay();
-console.log(userInput);
+
+
+
+let currentNumber;
+function populateDisplay(number){
+    const input = document.querySelector("input");
+    input.value = number;
+    currentNumber = number;
+}
+
+function calculator(){
+
+    let firstNumber;
+    let secondNumber;
+    let currentOperator;
+
+    let stringValue = '';
+    const numbers = document.querySelectorAll(".number");
+    const operators = document.querySelectorAll(".operator");
+    const clear = document.querySelector("#clear");
+
+    numbers.forEach((number) => {
+        let getNumber = function(e) {
+            stringValue += number.textContent;
+            if (stringValue.length <= 8) {
+                populateDisplay(Number(stringValue));
+            }
+
+        };
+        number.addEventListener("click", getNumber);
+    });
+    operators.forEach((operator) => {
+        operator.addEventListener("click", () => {
+            if(!firstNumber){
+                stringValue = '';
+                firstNumber = currentNumber;
+                operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
+                console.log("first " + firstNumber + " Curr " + currentOperator );
+            }
+            else{
+                secondNumber = currentNumber;
+                firstNumber = operate(firstNumber, secondNumber, currentOperator);
+                populateDisplay(firstNumber);
+                operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
+                secondNumber = null;
+                stringValue = '';
+                console.log(` f : ${firstNumber}, ${secondNumber}, ${currentOperator}`);
+            }
+        });
+    });
+    clear.addEventListener("click", ()=>{
+        firstNumber = null;
+        secondNumber = null;
+        populateDisplay(0);
+    })
+}
+calculator();
