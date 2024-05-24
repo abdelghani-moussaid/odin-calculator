@@ -56,10 +56,10 @@ function calculator(){
 
     numbers.forEach((number) => {
         let getNumber = function(e) {
-            stringValue += number.textContent;
-            stringValue = stringHandler(stringValue);
             if (stringValue.length <= 9) {
-                populateDisplay(stringValue);
+                stringValue += number.textContent;
+                stringValue = stringHandler(stringValue);
+                    populateDisplay(stringValue);
             }
 
         };
@@ -74,7 +74,8 @@ function calculator(){
             }
             else{
                 secondNumber = currentNumber;
-                firstNumber = operate(firstNumber, secondNumber, currentOperator);                
+                firstNumber = operate(firstNumber, secondNumber, currentOperator); 
+                console.log((+firstNumber.toFixed(9)) );               
                 (typeof firstNumber === "number") ? populateDisplay(+firstNumber.toFixed(9)) : populateDisplay(firstNumber);
                 operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
                 secondNumber = null;
@@ -124,3 +125,6 @@ function stringHandler(string){
     }
     return string;
 }
+
+
+// Format big floats and big int
