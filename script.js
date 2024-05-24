@@ -35,10 +35,11 @@ function divide(firstNumber, secondNumber){
 
 let currentNumber = 0;
 
-function populateDisplay(number){
+function populateDisplay(stringValue){
     const input = document.querySelector("input");
-    input.value = number;
-    currentNumber = number;
+    
+    input.value = stringValue;
+    currentNumber = Number(stringValue);
 }
 
 function calculator(){
@@ -51,12 +52,14 @@ function calculator(){
     const numbers = document.querySelectorAll(".number");
     const operators = document.querySelectorAll(".operator");
     const clear = document.querySelector("#clear");
+    const deleted = document.querySelector("#delete");
 
     numbers.forEach((number) => {
         let getNumber = function(e) {
             stringValue += number.textContent;
-            if (stringValue.length <= 8) {
-                populateDisplay(Number(stringValue));
+            stringValue = stringHandler(stringValue);
+            if (stringValue.length <= 9) {
+                populateDisplay(stringValue);
             }
 
         };
@@ -71,9 +74,7 @@ function calculator(){
             }
             else{
                 secondNumber = currentNumber;
-                console.log(firstNumber, secondNumber, currentOperator);
-                firstNumber = operate(firstNumber, secondNumber, currentOperator);
-                
+                firstNumber = operate(firstNumber, secondNumber, currentOperator);                
                 (typeof firstNumber === "number") ? populateDisplay(+firstNumber.toFixed(9)):populateDisplay(firstNumber);
                 operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
                 secondNumber = null;
@@ -84,7 +85,23 @@ function calculator(){
     clear.addEventListener("click", ()=>{
         firstNumber = null;
         secondNumber = null;
-        populateDisplay(0);
+        stringValue = "";
+        populateDisplay("0");
+    })
+    deleted.addEventListener("click", ()=>{
+        stringValue = stringValue.slice(0, -1);
+        populateDisplay(stringValue);
     })
 }
 calculator();
+
+function stringHandler(string){
+    if(string === "")
+        string = "0";
+    if(string[0] === "."){
+        string = "0" + string;
+    }
+    if(string[string.length-1] === '.' && string.substring(0, string.length -1).includes('.'))
+        string = string.slice(0, -1);
+    return string;
+}
