@@ -27,10 +27,14 @@ function multiply(firstNumber, secondNumber){
     return firstNumber * secondNumber;
 }
 function divide(firstNumber, secondNumber){
+    if(secondNumber === 0){
+        return "🤯";
+    }
     return firstNumber / secondNumber;
 }
 
 let currentNumber = 0;
+
 function populateDisplay(number){
     const input = document.querySelector("input");
     input.value = number;
@@ -64,17 +68,16 @@ function calculator(){
                 stringValue = '';
                 firstNumber = currentNumber;
                 operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
-                console.log("first " + firstNumber + " Curr " + currentOperator );
             }
             else{
                 secondNumber = currentNumber;
                 console.log(firstNumber, secondNumber, currentOperator);
                 firstNumber = operate(firstNumber, secondNumber, currentOperator);
-                populateDisplay(firstNumber);
+                
+                (typeof firstNumber === "number") ? populateDisplay(+firstNumber.toFixed(9)):populateDisplay(firstNumber);
                 operator.id === 'equals' ? firstNumber = null: currentOperator = operator.id;
                 secondNumber = null;
                 stringValue = '';
-                console.log(` f : ${firstNumber}, ${secondNumber}, ${currentOperator}`);
             }
         });
     });
