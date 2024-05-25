@@ -37,6 +37,7 @@ let currentNumber = 0;
 
 function populateDisplay(stringValue){
     const input = document.querySelector("input");  
+    stringValue = stringHandler(stringValue)
     input.value = stringValue;
     currentNumber = Number(stringValue);
 }
@@ -97,32 +98,44 @@ function calculator(){
         populateDisplay(stringValue);
     })
     toMinus.addEventListener("click", ()=>{
-        console.log(stringValue);
-        if(!(stringValue === "0" || stringValue === "")){
+        // after plus-minus button clicks
+        // make positive numbers other than zero negative 
+        if(+stringValue !== 0 && stringValue !== "" && stringValue[0] !== "-"){
             stringValue = "-" + stringValue;
-            populateDisplay(stringValue);
         }
+        // make negative numbers positive
+        else if(stringValue[0] === "-"){
+            stringValue = stringValue.slice(1);
+        }
+        populateDisplay(stringValue);
     })
 }
 calculator();
 
 function stringHandler(string){
+
+    // convert nulls to zero
     if(string === "")
         string = "0";
-    if(string[0] === "."){
+
+    // add zero to input when the first click is dot
+    if(string[0] === ".")
         string = "0" + string;
-    }
+    
+    // remove double dot from input
     if(string[string.length-1] === '.' && string.substring(0, string.length -1).includes('.'))
         string = string.slice(0, -1);
 
-    // remove multiple leading zeros 
-    if(Number(string) === 0 && !string.includes(".")){
-        string = '0';
-    }
     // remove leading zero
     if(string[0] === "0" && !string.includes(".") && string !== "0"){
         string = string.slice(1);
     }
+    
+    // if(string.length > 10){
+    //     if(Number.isInteger(+string))
+    //         string = '' + (+string).toExponential(0);
+    //     else if(string.indexOf(".") > )
+    // }
     return string;
 }
 
