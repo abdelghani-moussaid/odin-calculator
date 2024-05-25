@@ -18,7 +18,7 @@ function operate(firstNumber, secondNumber, operator){
     }
 }
 
-// stringValue is what is the input of the user and gets updated with the last result of the operations is string for better display
+// stringValue is the input of the user and gets updated with the latest result of the operations, it's type is string to handle 
 // currentNumber is stringValue converted to number to calculate  
 let currentNumber = 0;
 
@@ -42,7 +42,7 @@ function calculate(){
     const deleted = document.querySelector("#delete");
     const toMinus = document.querySelector("#plus-minus");
 
-    // with each number or dot clicked concatenate send it to display
+    // with each number or dot clicked concatenate char input and send to display (I included the dot in numbers DOM)
     numbers.forEach((number) => {
         let getNumber = function(e) {
             if (stringValue.length <= 9) {
@@ -55,14 +55,18 @@ function calculate(){
         number.addEventListener("click", getNumber);
     });
 
-    // if: input then operator(+,-,*,/) are clicked 
-    // then: first number takes input and input is reset
+    // if: user clicks an operator (+,-,*,/) and the first number is empty
+    // then: first number takes current input and the display is emptied
 
-    // else: When next input and then operator are clicked and the first number is already set
-    // then: the second number takes the input, get operation of the two numbers
-    //       the second number is reset
+    // else: user clicks operator and the first number is already set
+    // then: the second number takes the current input, 
+    //       calculate the result of operate the two numbers
+    //       display result   
+    //       the first number takes in the result
+    //       the second number is emptied
+    //       the display value is emptied
     
-    // if: equals is clicked; the calculator data is reset  
+    // if: equals is clicked; the first number is emptied 
 
     operators.forEach((operator) => {
         operator.addEventListener("click", () => {
@@ -81,15 +85,19 @@ function calculate(){
             }
         });
     });
+
+    // when clear all button is clicked
+    // remove empty everything
     clear.addEventListener("click", ()=>{
         firstNumber = null;
         secondNumber = null;
         stringValue = "";
         populateDisplay(stringValue);
     })
+
+    // when backstroke button is clicked
+    // remove last value
     deleted.addEventListener("click", ()=>{
-        // when backstroke button is clicked
-        // remove last value
         stringValue = stringValue.slice(0, -1);
         populateDisplay(stringValue);
     })
@@ -109,7 +117,8 @@ function calculate(){
 function handleString(string){
     const MAX_DISPLAY_LENGTH = 11;
     const MAX_INT_LENGTH = 9;
-    // when input is empty initially or after backstroke convert it to zero
+
+    // when input is empty initially, or after backstroke and clear all, convert it to zero
     if(string === "")
         string = "0";
 
@@ -117,11 +126,11 @@ function handleString(string){
     if(string[0] === ".")
         string = "0" + string;
     
-    // remove double dot from input
+    // prevent multiple dots 
     if(string[string.length-1] === '.' && string.substring(0, string.length -1).includes('.'))
         string = string.slice(0, -1);
 
-    // remove leading zero
+    // remove leading zero from non null values
     if(string[0] === "0" && !string.includes(".") && string !== "0"){
         string = string.slice(1);
     }
